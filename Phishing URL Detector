@@ -1,1 +1,95 @@
+import re
+import pandas as pd
+from urllib.parse import urlparse
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# --- Feature Extraction Function ---
+def extract_features(url):
+    """
+    Extracts relevant features from a URL to be used for phishing detection.
+
+    Parameters:
+    url (str): The URL string to analyze.
+
+    Returns:
+    dict: A dictionary containing extracted features such as URL length,
+          presence of IP address, '@' symbol, hyphens, number of dots,
+          HTTPS usage, and suspicious keywords.
+    """
+    features = {}
+    parsed = urlparse(url)
+    
+    # Basic Features
+    features['url_length'] = len(url)
+    features['has_ip'] = 1 if re.match(r'https?://\d+\.\d+\.\d+\.\d+', url) else 0
+    features['has_at'] = 1 if '@' in url else 0
+    features['has_hyphen'] = 1 if '-' in parsed.netloc else 0
+    features['num_dots'] = url.count('.')
+    features['is_https'] = 1 if parsed.scheme == 'https' else 0
+    features['has_suspicious_words'] = 1 if any(word in url for word in ['login', 'verify', 'update', 'bank', 'secure']) else 0
+    
+    return features
+
+# --- Sample URLs ---
+# List of tuples containing URL and label (1 for phishing, 0 for legitimate)
+data = [
+    ("http://192.168.0.1/bank-login", 1),
+    ("https://www.google.com", 0),
+    ("http://secure-login.paypal.com@evil.com", 1),
+    ("https://www.mybank-secure.com/login", 1),
+    ("https://github.com/login", 0),
+    ("http://verify-update-account.net", 1),
+]
+
+# --- Convert to DataFrame ---
+"""
+Extract features from each URL in the dataset and create a pandas DataFrame
+with the features and the corresponding labels.
+"""
+df = pd.DataFrame([extract_features(url) for url, label in data])
+df['label'] = [label for url, label in data]
+
+# --- Train-Test Split ---
+"""
+Splits the data into training and testing sets for the classifier.
+"""
+X = df.drop(columns=['label'])
+y = df['label']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# --- Train Classifier ---
+"""
+Initializes and trains a Decision Tree classifier on the training data.
+"""
+clf = DecisionTreeClassifier()
+clf.fit(X_train, y_train)
+
+# --- Evaluate ---
+"""
+Predicts on the test set and prints the accuracy of the classifier.
+"""
+y_pred = clf.predict(X_test)
+print(f"Accuracy: {accuracy_score(y_test, y_pred) * 100:.2f}%")
+
+# --- Predict New URL ---
+def predict_url(url):
+    """
+    Predicts whether a given URL is phishing or legitimate using the trained classifier.
+
+    Parameters:
+    url (str): The URL string to classify.
+
+    Prints:
+    Prediction result as "Phishing" or "Legitimate".
+    """
+    features = pd.DataFrame([extract_features(url)])
+    prediction = clf.predict(features)[0]
+    print(f"\nPrediction for URL: {url}")
+    print("Phishing" if prediction == 1 else "Legitimate")
+
+# --- Test It ---
+predict_url("http://secure-login.paypal.com@phishingsite.ru")
+predict_url("https://www.microsoft.com/en-us")
 
