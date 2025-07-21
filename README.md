@@ -15,3 +15,5 @@ Comprehensive Reporting: Dashboards displaying risk metrics, incident history, a
 Multi-Platform Support: Web dashboard, email notifications, and mobile alerts.
 
 Integration APIs: Easily connect with existing security infrastructure and SIEM tools.
+
+<img width="1897" height="948" alt="image" src="https://github.com/user-attachments/assets/10eda660-14a7-4a86-aa7a-408de8ddde8c" />
