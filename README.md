@@ -4,6 +4,7 @@ Advanced cybersecurity software and awareness platform delivering real-time brea
 Data breaches can cause significant financial loss and damage to reputation. Breach Guardians combines proactive monitoring, automated alerts, and user-friendly cybersecurity training to minimize risks and improve organizational resilience.
 
 Features
+
 Real-Time Breach Detection: Continuously monitor data sources and dark web leaks for compromised credentials or sensitive data.
 
 Automated Incident Response: Trigger alerts, lockdown compromised accounts, and guide remediation steps automatically.
