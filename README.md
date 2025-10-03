@@ -21,3 +21,6 @@ Integration APIs: Easily connect with existing security infrastructure and SIEM 
 
 <img width="1892" height="953" alt="image" src="https://github.com/user-attachments/assets/d174684f-c0db-4d72-bb54-1a0ad7495eae" />
 
+<img width="983" height="803" alt="image" src="https://github.com/user-attachments/assets/885b37b4-7941-47d9-a202-4469d85ef6b3" />
+
+
